@@ -1,11 +1,11 @@
-dojo.provide("plugins.JsonStore");
+dojo.provide("JsonStore.JsonStore");
 dojo.require("dojox.json.ref");
 dojo.require("dojox.json.query");
 dojo.require("dojo.string");
 
 dojox.json.ref._useRefs=true;
 
-dojo.declare("plugins.JsonStore", null, {
+dojo.declare("JsonStore.JsonStore", null, {
 	labelAttribute: "name",
 	idAttribute: "id",
 	setDirtyOnlyForIdentifiedObjects: true,
@@ -574,7 +574,7 @@ dojo.declare("plugins.JsonStore", null, {
 		}
 //		console.log("deleting: ", item);	
 		var updated = [];
-		plugins.JsonStore.deleteReferences(item, this._data, this._refMap, {idAttribute: this.idAttribute, parentSetCallback: dojo.hitch(this, function(parent, prop, i){
+		JsonStore.JsonStore.deleteReferences(item, this._data, this._refMap, {idAttribute: this.idAttribute, parentSetCallback: dojo.hitch(this, function(parent, prop, i){
 			//console.log("Removed Item reference from: ", parent, prop, i);
 			updated.push(arguments);
 		})});
@@ -661,7 +661,7 @@ dojo.declare("plugins.JsonStore", null, {
 	onDeleteItem: function(){}
 });
 
-plugins.JsonStore.deleteReferences = function(item, data, refmap,  options){
+JsonStore.JsonStore.deleteReferences = function(item, data, refmap,  options){
 	//console.log("deleteReferences: ", arguments);	
 	var idAttr = options.idAttribute || "id";
 	var cb = options.parentSetCallback;
@@ -710,13 +710,13 @@ plugins.JsonStore.deleteReferences = function(item, data, refmap,  options){
 								}
 								refmap[_id].push({parent: data, prop: i});
 							}
-						 	plugins.JsonStore.deleteReferences(item, data[i], refmap, options); 
+						 	JsonStore.JsonStore.deleteReferences(item, data[i], refmap, options); 
 						}
 					}else{
-						 plugins.JsonStore.deleteReferences(item, data[i], refmap, options); 
+						 JsonStore.JsonStore.deleteReferences(item, data[i], refmap, options); 
 					}
 				}else{
-					if (dojo.isArray(data[i])){ plugins.JsonStore.deleteReferences(item, data[i], refmap, options);  }
+					if (dojo.isArray(data[i])){ JsonStore.JsonStore.deleteReferences(item, data[i], refmap, options);  }
 				}
 			}
 		}else if (dojo.isObject(data)){
@@ -739,11 +739,11 @@ plugins.JsonStore.deleteReferences = function(item, data, refmap,  options){
 
 							refmap[_id].push({parent: data, prop: i});
 						}
-						plugins.JsonStore.deleteReferences(item, data[prop], refmap, options);		
+						JsonStore.JsonStore.deleteReferences(item, data[prop], refmap, options);		
 					}
 				}else{
 					if (dojo.isArray(data[prop])){
-						plugins.JsonStore.deleteReferences(item, data[prop], refmap, options);		
+						JsonStore.JsonStore.deleteReferences(item, data[prop], refmap, options);		
 					}
 				}
 			}
