@@ -290,6 +290,15 @@ dojo.declare("JsonStore.JsonStore", null, {
 
 	_toJsonQuery: function(args){
 		console.log("_toJsonQuery args: ", args);
+		
+		var ignoreCase = "=";
+		
+		if(args.queryOptions) {
+		    if(args.queryOptions.ignoreCase) {
+		        ignoreCase = "~";
+		    }
+		}
+		
 		if (args.query && dojo.isObject(args.query) && args.query.queryStr) {
 			args.queryStr = args.query.queryStr;
 		}
@@ -309,7 +318,7 @@ dojo.declare("JsonStore.JsonStore", null, {
 				var jsonQuery = "[?(", first = true;
 				for(var i in args.query){
 					if(args.query[i]!="*"){ // full wildcards can be ommitted
-						jsonQuery += (first ? "" : "&") + "@[" + dojo._escapeString(i) + "]=" + dojox.json.ref.toJson(args.query[i]);
+						jsonQuery += (first ? "" : "&") + "@[" + dojo._escapeString(i) + "]" + ignoreCase + dojox.json.ref.toJson(args.query[i]);
 						first = false;
 					}
 				}
